@@ -4,8 +4,6 @@
 package threads
 
 import (
-	"fmt"
-
 	"github.com/yashsriv/go-nachos/enums"
 	"github.com/yashsriv/go-nachos/global"
 	"github.com/yashsriv/go-nachos/interfaces"
@@ -33,15 +31,15 @@ func (t *Thread) FinishThread() {
 	global.Interrupt.SetLevel(enums.IntOff)
 	utils.Assert(t == global.CurrentThread.(*Thread), "Only currently running thread can be finished")
 
-	utils.Debug('t', "Finishing thread %q\n", t.Name())
+	utils.Debug('t', "Finishing thread %q\n", t)
 
 	global.ThreadToBeDestroyed = global.CurrentThread.(*Thread)
 	t.PutThreadToSleep() // invokes SWITCH
 }
 
 // Print prints name of thread to stdout
-func (t *Thread) Print() {
-	fmt.Printf("%s, ", t.Name())
+func (t *Thread) String() string {
+	return t.name
 }
 
 // PutThreadToSleep relinquishes the CPU, because the current thread is blocked
@@ -66,7 +64,7 @@ func (t *Thread) PutThreadToSleep() {
 	utils.Assert(t == global.CurrentThread.(*Thread), "Only current thread can be put to sleep")
 	utils.Assert(global.Interrupt.GetLevel() == enums.IntOff, "Interrupts should be off when putting thread to sleep")
 
-	utils.Debug('t', "Sleeping thread %q\n", t.Name())
+	utils.Debug('t', "Sleeping thread %q\n", t)
 
 	t.status = enums.BLOCKED
 	for nextThread = global.Scheduler.SelectNextReadyThread(); nextThread == nil; {
@@ -129,7 +127,7 @@ func (t *Thread) SaveUserState() {
 //----------------------------------------------------------------------
 func (t *Thread) ThreadFork(function utils.VoidFunction, arg interface{}) {
 	utils.Debug('t', "Forking thread %q with func = 0x%v, arg = %v\n",
-		t.Name(), function, arg)
+		t, function, arg)
 
 	t.createThreadStack(function, arg)
 
@@ -159,7 +157,7 @@ func (t *Thread) YieldCPU() {
 
 	utils.Assert(t == global.CurrentThread.(*Thread), "Only current thread can yield CPU")
 
-	utils.Debug('t', "Yielding thread %q\n", t.Name())
+	utils.Debug('t', "Yielding thread %q\n", t)
 
 	nextThread := global.Scheduler.SelectNextReadyThread()
 	if nextThread != nil {
@@ -191,11 +189,6 @@ func (t *Thread) createThreadStack(function utils.VoidFunction, arg interface{})
 		function(arg)
 		global.CurrentThread.FinishThread()
 	}()
-}
-
-// Name getter
-func (t *Thread) Name() string {
-	return t.name
 }
 
 // PID getter

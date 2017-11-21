@@ -26,7 +26,7 @@ func LaunchUserProcess(filename string) {
 }
 
 var forkFunction = func(arg interface{}) {
-	utils.Debug('t', "Now in thread %q\n", global.CurrentThread.Name())
+	utils.Debug('t', "Now in thread %q\n", global.CurrentThread)
 
 	if global.ThreadToBeDestroyed != nil {
 		global.ThreadToBeDestroyed = nil

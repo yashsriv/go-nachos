@@ -4,6 +4,8 @@
 package interfaces
 
 import (
+	"fmt"
+
 	"github.com/yashsriv/go-nachos/enums"
 	"github.com/yashsriv/go-nachos/utils"
 )
@@ -16,11 +18,10 @@ type IThread interface {
 	PutThreadToSleep()
 	FinishThread()
 	SetStatus(enums.ThreadStatus)
-	Print()
+	fmt.Stringer // Can be used to print thread for debugging
 
 	SaveUserState()
 	RestoreUserState()
-	Name() string
 	Space() IProcessAddressSpace
 	SetSpace(IProcessAddressSpace)
 	PID() int

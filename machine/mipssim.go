@@ -786,7 +786,7 @@ func (m *Machine) Run() {
 	instr := &Instruction{} // storage for decoded instruction
 
 	if utils.DebugIsEnabled('m') {
-		fmt.Printf("Starting thread %q at time %d\n", global.CurrentThread.Name(), global.Stats.TotalTicks)
+		fmt.Printf("Starting thread %q at time %d\n", global.CurrentThread, global.Stats.TotalTicks)
 	}
 
 	pid := global.CurrentThread.PID()

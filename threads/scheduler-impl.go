@@ -23,18 +23,23 @@ func (s *Scheduler) Init() {
 //
 //	"thread" is the thread to be put on the ready list.
 func (s *Scheduler) MoveThreadToReadyQueue(thread interfaces.IThread) {
-	utils.Debug('t', "Putting thread %q on ready list.\n", thread.Name())
+	utils.Debug('t', "Putting thread %q on ready list.\n", thread)
 
 	thread.SetStatus(enums.READY)
 	s.listOfReadyThreads.PushBack(thread)
+
+	if utils.DebugIsEnabled('t') {
+		s.Print()
+	}
 }
 
 // Print prints the ready list
 func (s *Scheduler) Print() {
 	fmt.Println("Ready list contents")
 	for e := s.listOfReadyThreads.Front(); e != nil; e = e.Next() {
-		e.Value.(*Thread).Print()
+		fmt.Printf("%q, ", e.Value)
 	}
+	fmt.Println("")
 }
 
 // ScheduleThread dispatches the CPU to nextThread. Save the state of the old thread,
@@ -61,7 +66,7 @@ func (s *Scheduler) ScheduleThread(nextThread interfaces.IThread) {
 	global.CurrentThread.SetStatus(enums.RUNNING) // nextThread is now running
 
 	utils.Debug('t', "Switching from thread %q to thread %q\n",
-		oldThread.Name(), nextThread.Name())
+		oldThread, nextThread)
 
 	// This is a machine-dependent assembly language routine defined
 	// in switch.s.  You may have to think
@@ -70,7 +75,7 @@ func (s *Scheduler) ScheduleThread(nextThread interfaces.IThread) {
 
 	_switch(oldThread, nextThread)
 
-	utils.Debug('t', "Now in thread %q\n", global.CurrentThread.Name())
+	utils.Debug('t', "Now in thread %q\n", global.CurrentThread)
 
 	// If the old thread gave up the processor because it was finishing,
 	// we need to delete its carcass.  Note we cannot delete the thread
