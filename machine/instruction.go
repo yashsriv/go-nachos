@@ -29,8 +29,8 @@ type Instruction struct {
 
 // OpInfo stores information for an operation
 type OpInfo struct {
-	OpCode byte     /* Translated op code. */
-	Format OpFormat /* Format type (IFMT or JFMT or RFMT) */
+	OpCode byte     // Translated op code.
+	Format OpFormat // Format type (IFMT or JFMT or RFMT)
 }
 
 // Decode decodes an instruction provided it has some value
