@@ -8,8 +8,8 @@ type ThreadStatus int
 
 // Enum values
 const (
-	JUST_CREATED ThreadStatus = iota
-	RUNNING
-	READY
-	BLOCKED
+	JustCreated ThreadStatus = iota
+	Running
+	Ready
+	Blocked
 )

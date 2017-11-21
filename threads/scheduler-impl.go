@@ -25,7 +25,7 @@ func (s *Scheduler) Init() {
 func (s *Scheduler) MoveThreadToReadyQueue(thread interfaces.IThread) {
 	utils.Debug('t', "Putting thread %q on ready list.\n", thread)
 
-	thread.SetStatus(enums.READY)
+	thread.SetStatus(enums.Ready)
 	s.listOfReadyThreads.PushBack(thread)
 
 	if utils.DebugIsEnabled('t') {
@@ -63,7 +63,7 @@ func (s *Scheduler) ScheduleThread(nextThread interfaces.IThread) {
 	}
 
 	global.CurrentThread = nextThread             // switch to the next thread
-	global.CurrentThread.SetStatus(enums.RUNNING) // nextThread is now running
+	global.CurrentThread.SetStatus(enums.Running) // nextThread is now running
 
 	utils.Debug('t', "Switching from thread %q to thread %q\n",
 		oldThread, nextThread)

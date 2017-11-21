@@ -66,7 +66,7 @@ func initialize() {
 	// its state.
 	global.CurrentThread = &threads.Thread{}
 	global.CurrentThread.Init("main")
-	global.CurrentThread.SetStatus(enums.RUNNING)
+	global.CurrentThread.SetStatus(enums.Running)
 
 	global.Interrupt.Enable()
 

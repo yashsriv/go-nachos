@@ -66,7 +66,7 @@ func (t *Thread) PutThreadToSleep() {
 
 	utils.Debug('t', "Sleeping thread %q\n", t)
 
-	t.status = enums.BLOCKED
+	t.status = enums.Blocked
 	for nextThread = global.Scheduler.SelectNextReadyThread(); nextThread == nil; {
 		global.Interrupt.Idle() // no one to run, wait for an interrupt
 		nextThread = global.Scheduler.SelectNextReadyThread()

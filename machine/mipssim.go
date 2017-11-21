@@ -88,8 +88,8 @@ const (
 	BCOND     byte = 101
 )
 
-// SIGN_BIT has 1 in position of signed bit
-const SIGN_BIT uint32 = 0x80000000
+// signBit has 1 in position of signed bit
+const signBit uint32 = 0x80000000
 
 const r31 byte = 31
 
@@ -264,7 +264,7 @@ func mult(a int32, b int32, signedArith bool, hiPtr *uint32, loPtr *uint32) {
 			}
 		}
 		bHi <<= 1
-		if bLo&SIGN_BIT != 0 {
+		if bLo&signBit != 0 {
 			bHi |= 1
 		}
 
@@ -354,8 +354,8 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 
 	case OP_ADD:
 		sum := int32(m.Registers[instr.Rs]) + int32(m.Registers[instr.Rt])
-		if (m.Registers[instr.Rs]^m.Registers[instr.Rt])&SIGN_BIT == 0 &&
-			(m.Registers[instr.Rs]^uint32(sum)&SIGN_BIT != 0) {
+		if (m.Registers[instr.Rs]^m.Registers[instr.Rt])&signBit == 0 &&
+			(m.Registers[instr.Rs]^uint32(sum)&signBit != 0) {
 			m.RaiseException(enums.OverflowException, 0)
 			return
 		}
@@ -363,8 +363,8 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 
 	case OP_ADDI:
 		sum := int32(m.Registers[instr.Rs]) + int32(instr.Extra)
-		if (m.Registers[instr.Rs]^instr.Extra&SIGN_BIT) == 0 &&
-			(instr.Extra^uint32(sum)&SIGN_BIT) != 0 {
+		if (m.Registers[instr.Rs]^instr.Extra&signBit) == 0 &&
+			(instr.Extra^uint32(sum)&signBit) != 0 {
 			m.RaiseException(enums.OverflowException, 0)
 			return
 		}
@@ -389,11 +389,11 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 
 	case OP_BGEZAL:
 		m.Registers[r31] = m.Registers[NextPCReg] + 4
-		if (m.Registers[instr.Rs] & SIGN_BIT) == 0 {
+		if (m.Registers[instr.Rs] & signBit) == 0 {
 			pcAfter = m.Registers[NextPCReg] + indexToAddr(instr.Extra)
 		}
 	case OP_BGEZ:
-		if (m.Registers[instr.Rs] & SIGN_BIT) == 0 {
+		if (m.Registers[instr.Rs] & signBit) == 0 {
 			pcAfter = m.Registers[NextPCReg] + indexToAddr(instr.Extra)
 		}
 
@@ -407,11 +407,11 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		}
 	case OP_BLTZAL:
 		m.Registers[r31] = m.Registers[NextPCReg] + 4
-		if m.Registers[instr.Rs]&SIGN_BIT != 0 {
+		if m.Registers[instr.Rs]&signBit != 0 {
 			pcAfter = m.Registers[NextPCReg] + indexToAddr(instr.Extra)
 		}
 	case OP_BLTZ:
-		if m.Registers[instr.Rs]&SIGN_BIT != 0 {
+		if m.Registers[instr.Rs]&signBit != 0 {
 			pcAfter = m.Registers[NextPCReg] + indexToAddr(instr.Extra)
 		}
 
@@ -681,8 +681,8 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		m.Registers[instr.Rd] = tmpi
 	case OP_SUB:
 		diff := int32(m.Registers[instr.Rs]) - int32(m.Registers[instr.Rt])
-		if ((m.Registers[instr.Rs]^m.Registers[instr.Rt])&SIGN_BIT) != 0 &&
-			((m.Registers[instr.Rs]^uint32(diff))&SIGN_BIT) != 0 {
+		if ((m.Registers[instr.Rs]^m.Registers[instr.Rt])&signBit) != 0 &&
+			((m.Registers[instr.Rs]^uint32(diff))&signBit) != 0 {
 			m.RaiseException(enums.OverflowException, 0)
 			return
 		}
