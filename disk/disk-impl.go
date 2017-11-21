@@ -55,7 +55,7 @@ func (d *Disk) Init(name string, callWhenDone utils.VoidFunction, callArg interf
 		if err1 != nil {
 			utils.Panic(err1)
 		}
-		utils.Assert(magicNum == magicNumber)
+		utils.Assert(magicNum == magicNumber, "Magic Numbers should match if a previously used file is opened")
 		d.active = false
 		return
 	}
@@ -112,8 +112,8 @@ func (d *Disk) ReadRequest(sectorNumber int, data []byte) {
 	var magicSize = int(binary.Size(magicNumber))
 	ticks := d.ComputeLatency(sectorNumber, false)
 
-	utils.Assert(!d.active) // only one request at a time
-	utils.Assert((sectorNumber >= 0) && (sectorNumber < NumSectors))
+	utils.Assert(!d.active, "Only one read request should be processed at a time") // only one request at a time
+	utils.Assert((sectorNumber >= 0) && (sectorNumber < NumSectors), "Sector number must be within the range of sectors")
 
 	utils.Debug('d', "Reading from sector %d\n", sectorNumber)
 	d.file.Seek(int64(SectorSize*sectorNumber+magicSize), 0)
@@ -152,8 +152,8 @@ func (d *Disk) WriteRequest(sectorNumber int, data []byte) {
 	var magicSize = binary.Size(magicNumber)
 	ticks := d.ComputeLatency(sectorNumber, true)
 
-	utils.Assert(!d.active)
-	utils.Assert((sectorNumber >= 0) && (sectorNumber < NumSectors))
+	utils.Assert(!d.active, "Only one write request should be processed at a time") // only one request at a time
+	utils.Assert((sectorNumber >= 0) && (sectorNumber < NumSectors), "Sector number must be within the range of sectors")
 
 	utils.Debug('d', "Writing to sector %d\n", sectorNumber)
 	d.file.Seek(int64(SectorSize*sectorNumber+magicSize), 0)
