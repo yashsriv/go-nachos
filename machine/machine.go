@@ -51,10 +51,10 @@ type Machine struct {
 }
 
 // Verify that interface is implemented
-var _ interfaces.IMachine = (*Machine)(nil)
+var _ interfaces.IMachine = &Machine{}
 
 // Implementation is in translate.go, machine-impl.go and mipssim.go
-// translate.go has functions related to memory access
-// mipssim.go has functionality for emulating the mips architecture
-//   and dummy machine
-// machine-impl.go has the rest of the functionality
+//   translate.go has functions related to memory access
+//   mipssim.go has functionality for emulating the mips architecture
+//     and dummy machine
+//   machine-impl.go has the rest of the functionality

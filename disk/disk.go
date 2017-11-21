@@ -27,4 +27,4 @@ type Disk struct {
 	bufferInit int                // When the track buffer started
 }
 
-var _ interfaces.IDisk = (*Disk)(nil)
+var _ interfaces.IDisk = &Disk{}

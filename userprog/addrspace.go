@@ -17,6 +17,7 @@ type ProcessAddressSpace struct {
 	numVirtualPages uint32
 }
 
-var _ interfaces.IProcessAddressSpace = (*ProcessAddressSpace)(nil)
+// Check if ProcessAddressSpace implements IProcessAddressSpace
+var _ interfaces.IProcessAddressSpace = &ProcessAddressSpace{}
 
 // Implemented in addrspace-impl.go

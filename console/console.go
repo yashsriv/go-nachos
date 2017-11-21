@@ -34,4 +34,5 @@ type Console struct {
 	nextPoll chan byte
 }
 
-var _ interfaces.IConsole = (*Console)(nil)
+// Test if our console implements the necessary interface
+var _ interfaces.IConsole = &Console{}

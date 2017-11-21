@@ -16,4 +16,5 @@ type Scheduler struct {
 	listOfReadyThreads *list.List
 }
 
-var _ interfaces.IScheduler = (*Scheduler)(nil)
+// Check if Scheduler implements IScheduler
+var _ interfaces.IScheduler = &Scheduler{}

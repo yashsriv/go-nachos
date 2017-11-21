@@ -29,6 +29,6 @@ type Semaphore struct {
 	queue *list.List
 }
 
-var _ interfaces.ISemaphore = (*Semaphore)(nil)
+var _ interfaces.ISemaphore = &Semaphore{}
 
 // Implemented in threads/synch/semaphores-impl.go

@@ -15,6 +15,6 @@ type Timer struct {
 	arg       interface{}
 }
 
-var _ interfaces.ITimer = (*Timer)(nil)
+var _ interfaces.ITimer = &Timer{}
 
 // Implemented in machine/timer-impl.go

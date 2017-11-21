@@ -38,4 +38,4 @@ type Thread struct {
 }
 
 // Check if Thread implements IThread
-var _ interfaces.IThread = (*Thread)(nil)
+var _ interfaces.IThread = &Thread{}
