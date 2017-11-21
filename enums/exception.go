@@ -1,3 +1,6 @@
+// Copyright (c) 1992-1993 The Regents of the University of California.
+// All rights reserved.
+
 package enums
 
 // ExceptionType is an enum to handle exceptions

@@ -1,3 +1,6 @@
+// Copyright (c) 1992-1993 The Regents of the University of California.
+// All rights reserved.
+
 // This file is the actual implementation of mips simulator
 // It is not absolutely necesary to understand this fully for
 // working on nachos

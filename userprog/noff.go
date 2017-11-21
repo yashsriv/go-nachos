@@ -1,3 +1,6 @@
+// Copyright (c) 1992-1993 The Regents of the University of California.
+// All rights reserved.
+
 package userprog
 
 // NOFFMAGIC is a magic number denoting Nachos object code file
@@ -19,4 +22,3 @@ type NoffHeader struct {
 	 * should be zero'ed before use
 	 */
 }
-
