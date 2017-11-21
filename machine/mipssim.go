@@ -334,9 +334,9 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 	instr.Value = raw
 	instr.Decode()
 
+	utils.Assert(instr.OpCode <= MaxOpcode, "Should be a valid opcode")
 	if utils.DebugIsEnabled('m') {
 		x := opStrings[instr.OpCode]
-		utils.Assert(instr.OpCode <= MaxOpcode)
 		fmt.Printf("At PC = 0x%x: ", m.Registers[PCReg])
 		fmt.Printf(x.val, typeToReg(x.args[0], instr),
 			typeToReg(x.args[1], instr), typeToReg(x.args[2], instr))
@@ -534,7 +534,7 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		// ReadMem assumes all 4 byte requests are aligned on an even
 		// word boundary.  Also, the little endian/big endian swap code would
 		// fail (I think) if the other cases are ever exercised.
-		utils.Assert((tmpi & 0x3) == 0)
+		utils.Assert((tmpi&0x3) == 0, "All 4 byte requests should be aligned on an even word boundary")
 
 		value, status := m.ReadMem(tmpi, 4)
 		if !status {
@@ -562,7 +562,7 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		// ReadMem assumes all 4 byte requests are aligned on an even
 		// word boundary.  Also, the little endian/big endian swap code would
 		// fail (I think) if the other cases are ever exercised.
-		utils.Assert((tmpi & 0x3) == 0)
+		utils.Assert((tmpi&0x3) == 0, "All 4 byte requests should be aligned on an even word boundary")
 
 		value, status := m.ReadMem(tmpi, 4)
 		if !status {
@@ -614,7 +614,6 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		m.Registers[instr.Rd] = ^(m.Registers[instr.Rs] | m.Registers[instr.Rt])
 
 	case OP_OR:
-		// TODO: Look into this interesting bug
 		m.Registers[instr.Rd] = m.Registers[instr.Rs] | m.Registers[instr.Rt]
 		break
 
@@ -697,7 +696,7 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		// The little endian/big endian swap code would
 		// fail (I think) if the other cases are ever exercised.
 
-		utils.Assert((tmpi & 0x3) == 0)
+		utils.Assert((tmpi&0x3) == 0, "All 4 byte requests should be aligned on an even word boundary")
 
 		value, status := m.ReadMem((tmpi & ^uint32(0x3)), 4)
 		if !status {
@@ -722,7 +721,7 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		// The little endian/big endian swap code would
 		// fail (I think) if the other cases are ever exercised.
 
-		utils.Assert((tmpi & 0x3) == 0)
+		utils.Assert((tmpi&0x3) == 0, "All 4 byte requests should be aligned on an even word boundary")
 		value, status := m.ReadMem((tmpi & ^uint32(0x3)), 4)
 		if !status {
 			return
@@ -761,7 +760,7 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		return
 
 	default:
-		utils.Assert(false)
+		utils.Assert(false, "Unhandled opcode")
 	}
 
 	// Now we have successfully executed the instruction.

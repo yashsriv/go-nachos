@@ -37,7 +37,7 @@ func (m *Machine) ReadMem(addr uint32, size int) (value uint32, success bool) {
 		data := m.MainMemory[physicalAddress : physicalAddress+4]
 		value = binary.LittleEndian.Uint32(data)
 	default:
-		utils.Assert(false)
+		utils.Assert(false, "Unsupported size for reading from memory")
 	}
 
 	utils.Debug('a', "\tvalue read = %8.8x\n", value)
@@ -75,7 +75,7 @@ func (m *Machine) WriteMem(addr uint32, size int, value uint32) bool {
 		binary.LittleEndian.PutUint32(m.MainMemory[physicalAddress:physicalAddress+4], uint32(value))
 
 	default:
-		utils.Assert(false)
+		utils.Assert(false, "Unsupported size for writing to memory")
 	}
 
 	return true
@@ -110,7 +110,7 @@ func (m *Machine) Translate(virtAddr uint32, size int, writing bool) (physAddr u
 	// TODO: When I add a TLB if I add one
 	// we must have either a TLB or a page table, but not both!
 	// ASSERT(tlb == NULL || KernelPageTable == NULL);
-	utils.Assert(m.KernelPageTable != nil)
+	utils.Assert(m.KernelPageTable != nil, "KernelPageTable should not be nil")
 
 	// calculate the virtual page number, and offset within the page,
 	// from the virtual address
@@ -149,7 +149,7 @@ func (m *Machine) Translate(virtAddr uint32, size int, writing bool) (physAddr u
 		entry.Dirty = true
 	}
 	physAddr = pageFrame*PageSize + offset
-	utils.Assert(physAddr >= 0 && (physAddr+uint32(size) <= MemorySize))
+	utils.Assert(physAddr >= 0 && (physAddr+uint32(size) <= MemorySize), "Memory address should be within memory limits")
 	utils.Debug('a', "phys addr = 0x%x\n", physAddr)
 	exception = enums.NoException
 	return

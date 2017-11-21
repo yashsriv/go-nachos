@@ -16,8 +16,8 @@ func LaunchUserProcess(filename string) {
 	space.InitUserModeCPURegisters() // set the initial register values
 	space.RestoreContextOnSwitch()   // load page table register
 
-	global.Machine.Run() // jump to the user progam
-	utils.Assert(false)  // machine->Run never returns;
+	global.Machine.Run()                                      // jump to the user progam
+	utils.Assert(false, "Code should never return back here") // machine->Run never returns;
 	// the address space exits
 	// by doing the syscall "exit"
 }

@@ -123,7 +123,7 @@ func (c *Console) GetChar() (byte, error) {
 // PutChar is used to write a character to the simulated display, schedule an interrupt
 //	to occur in the future, and return.
 func (c *Console) PutChar(ch byte) {
-	utils.Assert(c.putBusy == false)
+	utils.Assert(c.putBusy == false, "Console should not be busy putting another character")
 	var charray = make([]byte, 1)
 	charray[0] = ch
 	if _, err := c.writeFile.Write(charray); err != nil {

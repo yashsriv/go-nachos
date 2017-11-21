@@ -46,13 +46,13 @@ func (addrspace *ProcessAddressSpace) Init(filename string) {
 
 	binary.Read(executable, binary.LittleEndian, &noffH)
 
-	utils.Assert(noffH.NoffMagic == NOFFMAGIC)
+	utils.Assert(noffH.NoffMagic == NOFFMAGIC, "Executable magic value to confirm if its the right format")
 
 	var offset = mainMemoryOffset
 	var size = noffH.Code.Size + noffH.InitData.Size + noffH.UninitData.Size + UserStackSize
 	var numVirtualPages = uint32(math.Ceil(float64(size) / float64(machine.PageSize)))
 	size = numVirtualPages * machine.PageSize
-	utils.Assert(numVirtualPages <= (machine.NumPhysPages - (offset / machine.PageSize)))
+	utils.Assert(numVirtualPages <= (machine.NumPhysPages-(offset/machine.PageSize)), "There should be enough number of free physical pages")
 	utils.Debug('a', "Initializing address space, num pages %d, size %d\n",
 		numVirtualPages, size)
 	addrspace.kernelPageTable = make([]utils.TranslationEntry, numVirtualPages)

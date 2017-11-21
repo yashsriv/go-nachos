@@ -98,13 +98,13 @@ func (m *Machine) DumpState() {
 
 // ReadRegister fetches the contents of a user program register.
 func (m *Machine) ReadRegister(num int) uint32 {
-	utils.Assert(num >= 0 && num < NumTotalRegs)
+	utils.Assert(num >= 0 && num < NumTotalRegs, "Register number should be within range")
 	return m.Registers[num]
 }
 
 // WriteRegister writes the contents of a user program register.
 func (m *Machine) WriteRegister(num int, value uint32) {
-	utils.Assert(num >= 0 && num < NumTotalRegs)
+	utils.Assert(num >= 0 && num < NumTotalRegs, "Register number should be within range")
 	m.Registers[num] = value
 }
 

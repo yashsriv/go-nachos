@@ -124,12 +124,12 @@ func Init() {
 					convertIntToHex(printval, console)
 				}
 			default:
-				fmt.Printf("Unexpected user mode exception %v %v\n", which, typeSyscall)
-				utils.Assert(false)
+				fmt.Printf("Unexpected user mode exception %q %v\n", enums.ExceptionNames[which], typeSyscall)
+				utils.Assert(false, "Unsupported type of syscall")
 			}
 		} else {
-			fmt.Printf("Unexpected user mode exception %v %v\n", which, typeSyscall)
-			utils.Assert(false)
+			fmt.Printf("Unexpected user mode exception %q %v\n", enums.ExceptionNames[which], typeSyscall)
+			utils.Assert(false, "Unsupported type of exception")
 		}
 	}
 }

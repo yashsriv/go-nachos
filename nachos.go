@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"os"
+	"os/signal"
 
 	"github.com/yashsriv/go-nachos/enums"
 	"github.com/yashsriv/go-nachos/global"
@@ -64,31 +66,24 @@ func initialize() {
 	global.CurrentThread.SetStatus(enums.RUNNING)
 
 	global.Interrupt.Enable()
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for _ = range c {
+			// sig is a ^C, handle it
+			utils.Cleanup()
+		}
+	}()
 }
 
 func main() {
-	program := flag.String("x", "", "runs a user program")
+	var program utils.StringFlag
+	flag.Var(&program, "x", "runs a user program")
 	initialize()
-	if f := flag.CommandLine.Lookup("x"); f != nil {
-		if *program != "" {
-			// fileToDebugIn, err := os.Create("nachos.trace")
-			// if err != nil {
-			// 	panic(err)
-			// }
-			// trace.Start(fileToDebugIn)
-			// c := make(chan os.Signal, 1)
-			// signal.Notify(c, os.Interrupt)
-			// go func() {
-			// 	for _ = range c {
-			// 		// sig is a ^C, handle it
-			// 		trace.Stop()
-			// 		fileToDebugIn.Close()
-			// 		os.Exit(0)
-			// 	}
-			// }()
-			userprog.LaunchUserProcess(*program)
-		}
+	if program.IsSet {
+		userprog.LaunchUserProcess(program.Value)
 	}
 	global.CurrentThread.FinishThread()
-	utils.Assert(false)
+	utils.Assert(false, "This point of code can never be reached")
 }

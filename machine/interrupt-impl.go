@@ -35,7 +35,7 @@ func (interrupt *Interrupt) changeLevel(old enums.IntStatus, now enums.IntStatus
 // SetLevel is used to set the interrupt level for our machine
 func (interrupt *Interrupt) SetLevel(level enums.IntStatus) enums.IntStatus {
 	old := interrupt.level
-	utils.Assert(level == enums.IntOff || !interrupt.inHandler)
+	utils.Assert(level == enums.IntOff || !interrupt.inHandler, "Should not be handling an interrupt currently")
 	interrupt.changeLevel(old, level)
 	if level == enums.IntOn && old == enums.IntOff {
 		interrupt.OneTick()
@@ -91,7 +91,7 @@ func (interrupt *Interrupt) OneTick() {
 // out the interrupt handler, and we want to switch out the
 // interrupted thread.
 func (interrupt *Interrupt) YieldOnReturn() {
-	utils.Assert(interrupt.inHandler == true)
+	utils.Assert(interrupt.inHandler == true, "Should be called from within an interrupt handler")
 	interrupt.yieldOnReturn = true
 }
 
@@ -147,7 +147,7 @@ func (interrupt *Interrupt) Schedule(ipending interfaces.IPendingInterrupt) {
 	pending := ipending.(PendingInterrupt)
 	utils.Debug('i', "Scheduling interrupt handler the %q at time = %d\n",
 		intTypeNames[pending.TypeInt], pending.When)
-	utils.Assert(pending.When > 0)
+	utils.Assert(pending.When > global.Stats.TotalTicks, "Time of executing interrupt should be after current time")
 	interrupt.sortedInsert(pending)
 }
 
@@ -211,7 +211,7 @@ func (interrupt *Interrupt) sortedInsert(pending PendingInterrupt) {
 func (interrupt *Interrupt) checkIfDue(advanceClock bool) bool {
 	old := interrupt.status
 
-	utils.Assert(interrupt.level == enums.IntOff) // interrupts need to be disabled, to invoke an interrupt handler
+	utils.Assert(interrupt.level == enums.IntOff, "Interrupts need to be disabled, to invoke an interrupt handler")
 	if utils.DebugIsEnabled('i') {
 		interrupt.DumpState()
 	}

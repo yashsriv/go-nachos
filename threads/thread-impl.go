@@ -28,7 +28,7 @@ const NO_PARENT = -66
 //	between setting threadToBeDestroyed, and going to sleep.
 func (t *Thread) FinishThread() {
 	global.Interrupt.SetLevel(enums.IntOff)
-	utils.Assert(t == global.CurrentThread.(*Thread))
+	utils.Assert(t == global.CurrentThread.(*Thread), "Only currently running thread can be finished")
 
 	utils.Debug('t', "Finishing thread %q\n", t.Name())
 
@@ -60,8 +60,8 @@ func (t *Thread) Print() {
 func (t *Thread) PutThreadToSleep() {
 	var nextThread interfaces.IThread
 
-	utils.Assert(t == global.CurrentThread.(*Thread))
-	utils.Assert(global.Interrupt.GetLevel() == enums.IntOff)
+	utils.Assert(t == global.CurrentThread.(*Thread), "Only current thread can be put to sleep")
+	utils.Assert(global.Interrupt.GetLevel() == enums.IntOff, "Interrupts should be off when putting thread to sleep")
 
 	utils.Debug('t', "Sleeping thread %q\n", t.Name())
 
@@ -154,7 +154,7 @@ func (t *Thread) ThreadFork(function utils.VoidFunction, arg interface{}) {
 func (t *Thread) YieldCPU() {
 	oldLevel := global.Interrupt.SetLevel(enums.IntOff)
 
-	utils.Assert(t == global.CurrentThread.(*Thread))
+	utils.Assert(t == global.CurrentThread.(*Thread), "Only current thread can yield CPU")
 
 	utils.Debug('t', "Yielding thread %q\n", t.Name())
 
