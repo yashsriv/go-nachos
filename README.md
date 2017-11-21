@@ -2,10 +2,11 @@
 
 ![Logo](./gopher.svg)
 
-<sup>[1]</sup> The Go gopher was designed by [Renee French](http://reneefrench.blogspot.com/).
-The Gopher character design is licensed under the Creative Commons 3.0 Attributions license.
+<sup>[1]</sup> Special thanks to [@egonelbre](https://github.com/egonelbre) for the [gopher vector](https://github.com/egonelbre/gophers)  
+<sup>[2]</sup> The Go gopher was designed by [Renee French](http://reneefrench.blogspot.com/).
+The Gopher character design is licensed under the Creative Commons 3.0 Attributions license.  
+<sup>[3]</sup> Vector of the Nachos used in picture above was <a href="https://www.freepik.com/free-vector/hand-drawn-mexican-food-collection_851169.htm">designed by Freepik</a>
 
-<sup>[2]</sup> Nachos pictures was <a href="https://www.freepik.com/free-vector/hand-drawn-mexican-food-collection_851169.htm">Designed by Freepik</a>
 
 ---
 
