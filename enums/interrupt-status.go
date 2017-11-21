@@ -11,3 +11,13 @@ const (
 	IntOff IntStatus = false
 	IntOn  IntStatus = true
 )
+
+func (s IntStatus) String() string {
+	switch s {
+	case IntOff:
+		return "off"
+	case IntOn:
+		return "on"
+	}
+	return "unknown status"
+}

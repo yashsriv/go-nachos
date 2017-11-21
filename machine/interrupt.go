@@ -41,20 +41,5 @@ type internalInterrupt interface {
 
 // Check if interface is implemented by our Interrupt
 // Implemented in interrupt-impl.go
-var _ interfaces.IInterrupt = (*Interrupt)(nil)
-var _ internalInterrupt = (*Interrupt)(nil)
-
-// Various human-readable names for clearer debug messages
-var intStatusNames = map[enums.IntStatus]string{
-	enums.IntOff: "off",
-	enums.IntOn:  "on",
-}
-
-var intTypeNames = map[enums.IntType]string{
-	enums.TimerInt:        "timer",
-	enums.DiskInt:         "disk",
-	enums.ConsoleWriteInt: "console write",
-	enums.ConsoleReadInt:  "console read",
-	enums.NetworkSendInt:  "network send",
-	enums.NetworkRecvInt:  "network recv",
-}
+var _ interfaces.IInterrupt = &Interrupt{}
+var _ internalInterrupt = &Interrupt{}

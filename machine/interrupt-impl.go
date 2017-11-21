@@ -32,7 +32,7 @@ func (interrupt *Interrupt) Init() {
 // "now" -- the new interrupt status
 func (interrupt *Interrupt) changeLevel(old enums.IntStatus, now enums.IntStatus) {
 	interrupt.level = now
-	utils.Debug('i', "\tinterrupts: %q -> %q\n", intStatusNames[old], intStatusNames[now])
+	utils.Debug('i', "\tinterrupts: %q -> %q\n", old, now)
 }
 
 // SetLevel is used to set the interrupt level for our machine
@@ -149,7 +149,7 @@ func (interrupt *Interrupt) Halt() {
 func (interrupt *Interrupt) Schedule(ipending interfaces.IPendingInterrupt) {
 	pending := ipending.(PendingInterrupt)
 	utils.Debug('i', "Scheduling interrupt handler the %q at time = %d\n",
-		intTypeNames[pending.TypeInt], pending.When)
+		pending.TypeInt, pending.When)
 	utils.Assert(pending.When > global.Stats.TotalTicks, "Time of executing interrupt should be after current time")
 	interrupt.sortedInsert(pending)
 }
@@ -172,12 +172,12 @@ func (interrupt *Interrupt) GetStatus() enums.MachineStatus {
 // DumpState prints the complete interrupt state - the status, and all interrupts
 // that are scheduled to occur in the future.
 func (interrupt *Interrupt) DumpState() {
-	fmt.Printf("Time: %d, interrupts %v\n", global.Stats.TotalTicks, interrupt.level)
+	fmt.Printf("Time: %d, interrupts %q\n", global.Stats.TotalTicks, interrupt.level)
 	fmt.Println("Pending interrupts:")
 	element := interrupt.pending.Front()
 	for element != nil {
 		x := element.Value.(PendingInterrupt)
-		fmt.Printf("Interrupt handler %q, scheduled at %d\n", intTypeNames[x.TypeInt], x.When)
+		fmt.Printf("Interrupt handler %q, scheduled at %d\n", x.TypeInt, x.When)
 		element = element.Next()
 	}
 	fmt.Println("\nEnd of pending interrupts")
@@ -239,7 +239,7 @@ func (interrupt *Interrupt) checkIfDue(advanceClock bool) bool {
 		return false
 	}
 
-	utils.Debug('i', "Invoking interrupt handler for the %q at time %d\n", intTypeNames[toOccur.TypeInt], toOccur.When)
+	utils.Debug('i', "Invoking interrupt handler for the %q at time %d\n", toOccur.TypeInt, toOccur.When)
 	if global.Machine != nil {
 		global.Machine.DelayedLoad(0, 0)
 	}

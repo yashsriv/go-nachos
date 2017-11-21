@@ -19,14 +19,24 @@ const (
 	NumExceptionTypes
 )
 
-// ExceptionNames are human readable names for exceptions for debugging purposes
-var ExceptionNames = map[ExceptionType]string{
-	NoException:           "no exception",
-	SyscallException:      "syscall",
-	PageFaultException:    "page fault",
-	ReadOnlyException:     "page read only",
-	BusErrorException:     "bus error",
-	AddressErrorException: "address error",
-	OverflowException:     "overflow",
-	IllegalInstrException: "illegal instruction",
+func (t ExceptionType) String() string {
+	switch t {
+	case NoException:
+		return "no exception"
+	case SyscallException:
+		return "syscall"
+	case PageFaultException:
+		return "page fault"
+	case ReadOnlyException:
+		return "page read only"
+	case BusErrorException:
+		return "bus error"
+	case AddressErrorException:
+		return "address error"
+	case OverflowException:
+		return "overflow"
+	case IllegalInstrException:
+		return "illegal instruction"
+	}
+	return "unexpected exception"
 }

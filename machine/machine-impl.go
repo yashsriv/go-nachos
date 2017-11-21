@@ -24,7 +24,7 @@ func (m *Machine) EnableDebugging() {
 //	"which" -- the cause of the kernel trap
 //	"badVaddr" -- the virtual address causing the trap, if appropriate
 func (m *Machine) RaiseException(which enums.ExceptionType, badVAddr uint32) {
-	utils.Debug('m', "Exception: %q\n", enums.ExceptionNames[which])
+	utils.Debug('m', "Exception: %q\n", which)
 	m.Registers[BadVAddrReg] = badVAddr
 	m.DelayedLoad(0, 0) // finish anything in progress
 	global.Interrupt.SetStatus(enums.SystemMode)
