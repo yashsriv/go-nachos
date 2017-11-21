@@ -12,4 +12,4 @@ type ISemaphore interface {
 	V()
 }
 
-// Concrete implementation in threads/synchro/semaphore.go
+// Concrete implementation in threads/synch/semaphore.go
