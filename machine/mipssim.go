@@ -225,11 +225,9 @@ func typeToReg(reg regType, instr *Instruction) int {
 	}
 }
 
-func mult(a int32, b int32, signedArith bool, hiPtr *uint32, loPtr *uint32) {
+func mult(a int32, b int32, signedArith bool) (uint32, uint32) {
 	if (a == 0) || (b == 0) {
-		*hiPtr = 0
-		*loPtr = 0
-		return
+		return 0, 0
 	}
 
 	// Compute the sign of the result, then make everything positive
@@ -283,8 +281,8 @@ func mult(a int32, b int32, signedArith bool, hiPtr *uint32, loPtr *uint32) {
 		}
 	}
 
-	*hiPtr = hi
-	*loPtr = lo
+	return hi, lo
+
 }
 
 // DelayedLoad simulates the effects of a delayed load.
@@ -606,12 +604,10 @@ func (m *Machine) OneInstruction(instruction interfaces.IInstruction) {
 		break
 
 	case OP_MULT:
-		mult(int32(m.Registers[instr.Rs]), int32(m.Registers[instr.Rt]), true,
-			&m.Registers[HiReg], &m.Registers[LoReg])
+		m.Registers[HiReg], m.Registers[LoReg] = mult(int32(m.Registers[instr.Rs]), int32(m.Registers[instr.Rt]), true)
 
 	case OP_MULTU:
-		mult(int32(m.Registers[instr.Rs]), int32(m.Registers[instr.Rt]), false,
-			&m.Registers[HiReg], &m.Registers[LoReg])
+		m.Registers[HiReg], m.Registers[LoReg] = mult(int32(m.Registers[instr.Rs]), int32(m.Registers[instr.Rt]), false)
 
 	case OP_NOR:
 		m.Registers[instr.Rd] = ^(m.Registers[instr.Rs] | m.Registers[instr.Rt])
